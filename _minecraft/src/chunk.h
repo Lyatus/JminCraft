@@ -63,9 +63,9 @@ public:
 		_WorldVert[i] = x;
 		_WorldVert[i + 1] = y;
 		_WorldVert[i + 2] = z;
-		_WorldCols[i] = r;
-		_WorldCols[i + 1] = g;
-		_WorldCols[i + 2] = b;
+		_WorldCols[i] = r + (rand() % 100) / 2000.0f;
+		_WorldCols[i + 1] = g + (rand() % 100) / 2000.0f;
+		_WorldCols[i + 2] = b + (rand() % 100) / 2000.0f;
 		_WorldNorm[i] = nx;
 		_WorldNorm[i + 1] = ny;
 		_WorldNorm[i + 2] = nz;
@@ -179,7 +179,7 @@ public:
 
 		//On bind le buuffer
 		glBindBuffer(GL_ARRAY_BUFFER, _BufWorld);
-		//NYRenderer::checkGlError("glBindBuffer");
+		NYRenderer::checkGlError("glBindBuffer");
 
 		//On active les datas que contiennent le VBO
 		glEnableClientState(GL_VERTEX_ARRAY);

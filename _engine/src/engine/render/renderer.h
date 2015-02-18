@@ -229,7 +229,6 @@ class NYRenderer
 			//Rendu de la scène
 			if(_RenderObjectsFun != NULL)
 				(*_RenderObjectsFun)();
-
 			//Si on a active le post process
 			if(_DoPostProcess)
 			{

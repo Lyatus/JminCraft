@@ -15,12 +15,14 @@
 #include "engine/gui/screen.h"
 #include "engine/gui/screen_manager.h"
 
+#include "avatar.h"
 #include "world.h"
 
 
 NYRenderer * g_renderer = NULL;
 NYTimer * g_timer = NULL;
 NYWorld * g_world;
+NYAvatar * g_avatar;
 int g_nb_frames = 0;
 float g_elapsed_fps = 0;
 int g_main_window_id;
@@ -63,8 +65,15 @@ void update(void) {
 		g_nb_frames = 0;
 	}
 
+	//Avatar
+	g_avatar->update(elapsed);
+
+
+	
 	//Rendu
 	g_renderer->render(elapsed);
+
+	
 }
 
 
@@ -73,6 +82,8 @@ void render2d(void) {
 }
 
 void renderObjects(void) {
+	
+
 	//Rendu des axes
 	glDisable(GL_LIGHTING);
 
@@ -94,8 +105,6 @@ void renderObjects(void) {
 	glVertex3d(0, 0, 0);
 	glVertex3d(0, 0, 10000);
 	glEnd();
-
-	glEnable(GL_LIGHTING);
 
 	//juste apres le rendu des axes
 
@@ -133,6 +142,9 @@ void renderObjects(void) {
 
 	//Rendu du monde
 	g_world->render_world_vbo();
+
+	//Rendu de l'avatar
+	g_avatar->render();
 
 	//Sphère blanche transparente pour bien voir le shading et le reflet du soleil
 	GLfloat whiteSpecularMaterialSphere[] = { 0.3, 0.3, 0.3, 0.8 };
@@ -188,7 +200,7 @@ bool getSunDirection(NYVert3Df & sun, float mnLever, float mnCoucher) {
 }
 void setLights(void) {
 	//On active la light 0
-	glEnable(GL_BLEND_SRC);
+	glEnable(GL_BLEND);
 	glEnable(GL_LIGHT0);
 
 	//On recup la direciton du soleil
@@ -268,12 +280,11 @@ void keyboardDownFunction(unsigned char key, int p1, int p2) {
 			g_fullscreen = false;
 		}
 	}
-	else if (key == 'z') {
-		g_renderer->_Camera->moveForward(.1f);
-	}
+	g_avatar->key(key, true);
 }
 
 void keyboardUpFunction(unsigned char key, int p1, int p2) {
+	g_avatar->key(key, false);
 }
 
 void mouseWheelFunction(int wheel, int dir, int x, int y) {
@@ -306,13 +317,8 @@ void mouseMoveFunction(int x, int y, bool pressed) {
 	}
 
 	if (oldx || oldy) {
-		if (pressed) {
-			g_renderer->_Camera->move(NYVert3Df((x - oldx) / 8.f, (y - oldy) / 8.f, 0));
-		}
-		else {
-			g_renderer->_Camera->rotateAround(-(x - oldx) / 180.f);
-			g_renderer->_Camera->rotateUpAround(-(y - oldy) / 180.f);
-		}
+		g_renderer->_Camera->rotate(-(x - oldx) / 180.f);
+		g_renderer->_Camera->rotateUp(-(y - oldy) / 180.f);
 	}
 	oldx = x;
 	oldy = y;
@@ -476,11 +482,6 @@ int main(int argc, char* argv[]) {
 	//Ecran a rendre
 	g_screen_manager->setActiveScreen(g_screen_jeu);
 
-	//Init Camera
-	g_renderer->_Camera->setPosition(NYVert3Df(50, 50, 50));
-	g_renderer->_Camera->setLookAt(NYVert3Df(0, 0, 0));
-
-
 	//Fin init moteur
 
 	//Init application
@@ -489,7 +490,10 @@ int main(int argc, char* argv[]) {
 	g_world->_FacteurGeneration = 5;
 	g_world->init_world();
 	g_world->add_world_to_vbo();
-	g_world->lisse();
+
+	//Init Avatar
+	g_avatar = new NYAvatar(g_renderer->_Camera, g_world);
+	g_avatar->Position = NYVert3Df(10, 10, 40);
 
 	//Init Timer
 	g_timer = new NYTimer();

@@ -71,6 +71,10 @@ public:
 	void moveTo(NYVert3Df & target) {
 		this->move(target - _Position);
 	}
+	
+	void moveLookAt(NYVert3Df & target) {
+		this->move(target - _LookAt);
+	}
 
 	void moveForward(float delta) {
 		_Position += _Direction*delta;
