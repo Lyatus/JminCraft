@@ -15,7 +15,7 @@ class NYCube
 public:
 	bool _Draw;
 	NYCubeType _Type;
-	static const int CUBE_SIZE = 1;
+	static const int CUBE_SIZE = 10;
 
 	NYCube() {
 		_Draw = true;

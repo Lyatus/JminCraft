@@ -28,6 +28,7 @@ float g_elapsed_fps = 0;
 int g_main_window_id;
 int g_mouse_btn_gui_state = 0;
 bool g_fullscreen = false;
+GLuint g_program;
 
 //Sun
 NYVert3Df g_sun_dir;
@@ -139,6 +140,20 @@ void renderObjects(void) {
 
 	//Reset de la matrice
 	glPopMatrix();
+	
+	//Activer shader
+	glUseProgram(g_program);
+
+	GLuint elap = glGetUniformLocation(g_program, "elapsed");
+	glUniform1f(elap, NYRenderer::_DeltaTimeCumul);
+
+	GLuint amb = glGetUniformLocation(g_program, "ambientLevel");
+	glUniform1f(amb, 0.4);
+
+	GLuint invView = glGetUniformLocation(g_program, "invertView");
+	glUniformMatrix4fv(invView, 1, true, g_renderer->_Camera->_InvertViewMatrix.Mat.t);
+
+
 
 	//Rendu du monde
 	g_world->render_world_vbo();
@@ -317,8 +332,8 @@ void mouseMoveFunction(int x, int y, bool pressed) {
 	}
 
 	if (oldx || oldy) {
-		g_renderer->_Camera->rotate(-(x - oldx) / 180.f);
-		g_renderer->_Camera->rotateUp(-(y - oldy) / 180.f);
+		g_renderer->_Camera->rotateAround((x - oldx) / 180.f);
+		g_renderer->_Camera->rotateUpAround((y - oldy) / 180.f);
 	}
 	oldx = x;
 	oldy = y;
@@ -418,7 +433,7 @@ int main(int argc, char* argv[]) {
 	g_renderer->setRender2DFun(render2d);
 	g_renderer->setLightsFun(setLights);
 	g_renderer->setBackgroundColor(NYColor());
-	g_renderer->initialise();
+	g_renderer->initialise(true);
 
 	//On applique la config du renderer
 	glViewport(0, 0, g_renderer->_ScreenWidth, g_renderer->_ScreenHeight);
@@ -476,7 +491,7 @@ int main(int argc, char* argv[]) {
 	g_slider->Visible = true;
 	g_screen_params->addElement(g_slider);
 
-	y += g_slider->Height + 1;
+	y += g_slider->Height + 1; 
 	y += 10;
 
 	//Ecran a rendre
@@ -493,10 +508,13 @@ int main(int argc, char* argv[]) {
 
 	//Init Avatar
 	g_avatar = new NYAvatar(g_renderer->_Camera, g_world);
-	g_avatar->Position = NYVert3Df(10, 10, 40);
+	g_avatar->Position = NYVert3Df(10, 10, 400);
 
 	//Init Timer
 	g_timer = new NYTimer();
+
+	//Init shaders
+	g_program = g_renderer->createProgram("shaders/psbase.glsl", "shaders/vsbase.glsl");
 
 	//On start
 	g_timer->start();

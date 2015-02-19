@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\_engine\src\engine\log\log.cpp" />
     <ClCompile Include="..\..\_engine\src\engine\render\renderer.cpp" />
+    <ClCompile Include="..\src\basic_physic_engine.cpp" />
     <ClCompile Include="..\src\chunk.cpp" />
     <ClCompile Include="..\src\main.cpp" />
   </ItemGroup>
@@ -23,10 +24,16 @@
     <ClInclude Include="..\..\_engine\src\engine\render\camera.h" />
     <ClInclude Include="..\..\_engine\src\engine\render\renderer.h" />
     <ClInclude Include="..\src\avatar.h" />
+    <ClInclude Include="..\src\basic_physic_engine.h" />
     <ClInclude Include="..\src\chunk.h" />
     <ClInclude Include="..\src\cube.h" />
+    <ClInclude Include="..\src\my_physics.h" />
     <ClInclude Include="..\src\world.h" />
-    <ClInclude Include="my_physics.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\run\shaders\postprocess\pshader.glsl" />
+    <None Include="..\run\shaders\psbase.glsl" />
+    <None Include="..\run\shaders\vsbase.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8531C627-6452-48A0-B4A8-40CCCC6376E1}</ProjectGuid>

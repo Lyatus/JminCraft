@@ -34,9 +34,9 @@ public:
 		Cam = cam;
 		World = world;
 		Cam->setLookAt(Position = NYVert3Df(0, 0, 0));
-		Cam->setPosition(NYVert3Df(5, 5, 5));
-		Height = 1;
-		Width = 1;
+		Cam->setPosition(NYVert3Df(32, 32, 32));
+		Height = 5;
+		Width = 5;
 		MoveSpeed = 32;
 		AirMoveSpeed = 4;
 		Gravity = 9.8;
@@ -53,19 +53,14 @@ public:
 	void render(void) {
 		glPushMatrix();
 		glTranslated(Position.X, Position.Y, Position.Z);
+		glColor3f(1, 1, 0);
 		glutSolidCube(Width);
-		glDisable(GL_LIGHTING);
-		glBegin(GL_LINES);
-		glVertex3d(0, 0, Height*.75f);
-		glVertex3d(Cam->_Direction.X * 5, Cam->_Direction.Y * 5, Cam->_Direction.Z * 5);
-		glEnd();
-		glEnable(GL_LIGHTING);
 		glPopMatrix();
 	}
 
 	void update(float elapsed) {
 		//Par defaut, on applique la gravité (-100 sur Z)
-		NYVert3Df force = NYVert3Df(0, 0, -1) * Gravity;
+		NYVert3Df force = NYVert3Df(0, 0, -1) * 100.0f;
 
 		//Si l'avatar n'est pas au sol, alors il ne peut pas sauter
 		if (!Standing)
@@ -75,29 +70,29 @@ public:
 		//Si il est au sol, on applique les controles "ground"
 		if (Standing) {
 			if (avance)
-				force += Cam->_Direction * MoveSpeed;
+				force += Cam->_Direction * 400;
 			if (recule)
-				force += Cam->_Direction * -MoveSpeed;
+				force += Cam->_Direction * -400;
 			if (gauche)
-				force += Cam->_NormVec * -MoveSpeed;
+				force += Cam->_NormVec * -400;
 			if (droite)
-				force += Cam->_NormVec * MoveSpeed;
+				force += Cam->_NormVec * 400;
 		}
 		else //Si il est en l'air, c'est du air control
 		{
 			if (avance)
-				force += Cam->_Direction * AirMoveSpeed;
+				force += Cam->_Direction * 50;
 			if (recule)
-				force += Cam->_Direction * -AirMoveSpeed;
+				force += Cam->_Direction * -50;
 			if (gauche)
-				force += Cam->_NormVec * -AirMoveSpeed;
+				force += Cam->_NormVec * -50;
 			if (droite)
-				force += Cam->_NormVec * AirMoveSpeed;
+				force += Cam->_NormVec * 50;
 		}
 
 		//On applique le jump
 		if (Jump) {
-			force += NYVert3Df(0, 0, 1) * JumpImp / elapsed; //(impulsion, pas fonction du temps)
+			force += NYVert3Df(0, 0, 1) * 50.0f / elapsed; //(impulsion, pas fonction du temps)
 			Jump = false;
 		}
 
@@ -118,58 +113,39 @@ public:
 		NYVert3Df oldPosition = Position;
 		Position += (Speed * elapsed);
 
-		//On recup la collision a la nouvelle position
-		NYCollision collidePrinc = 0x00;
-		NYCollision collide = World->collide_with_world(Position, Width, Height, collidePrinc);
-		if (collide & NY_COLLIDE_BOTTOM && Speed.Z < 0) {
-			Position.Z = oldPosition.Z;
-			Speed *= pow(0.01f, elapsed);
-			Speed.Z = 0;
-			Standing = true;
-		}
-		else
-			Standing = false;
+		Standing = false;
 
-		if (collide & NY_COLLIDE_UP && !Standing && Speed.Z > 0) {
-			Position.Z = oldPosition.Z;
-			Speed.Z = 0;
-		}
-
-		//On a regle le probleme du bottom et up, on gère les collision sur le plan (x,y)
-		collide = World->collide_with_world(Position, Width, Height, collidePrinc);
-
-		//En fonction des cotés, on annule une partie des déplacements
-		if (collide & NY_COLLIDE_BACK && collide & NY_COLLIDE_RIGHT && collide & NY_COLLIDE_LEFT) {
-			Position.Y = oldPosition.Y;
-			Speed.Y = 0;
-		}
-
-		if (collide & NY_COLLIDE_FRONT && collide & NY_COLLIDE_RIGHT && collide & NY_COLLIDE_LEFT) {
-			Position.Y = oldPosition.Y;
-			Speed.Y = 0;
-		}
-
-		if (collide & NY_COLLIDE_RIGHT && collide & NY_COLLIDE_FRONT && collide & NY_COLLIDE_BACK) {
-			Position.X = oldPosition.X;
-			Speed.X = 0;
-		}
-
-		if (collide & NY_COLLIDE_LEFT && collide & NY_COLLIDE_FRONT && collide & NY_COLLIDE_BACK) {
-			Position.X = oldPosition.X;
-			Speed.X = 0;
-		}
-
-		//Si je collide sur un angle
-		if (!(collide & NY_COLLIDE_BACK && collide & NY_COLLIDE_FRONT) && !(collide & NY_COLLIDE_LEFT && collide & NY_COLLIDE_RIGHT))
-			if (collide & (NY_COLLIDE_BACK | NY_COLLIDE_FRONT | NY_COLLIDE_RIGHT | NY_COLLIDE_LEFT)) {
-				Position.Y = oldPosition.Y;
-				Position.X = oldPosition.X;
+		for (int i = 0; i < 3; i++) {
+			float valueColMin = 0;
+			NYAxis axis = World->getMinCol(Position, Width, Height, valueColMin, i);
+			if (axis != 0) {
+				valueColMin = max(abs(valueColMin*1.05f), 0.0001f) * (valueColMin > 0 ? 1.0f : -1.0f);
+				if (axis & NY_AXIS_X) {
+					Position.X += valueColMin;
+					Speed.X = 0;
+				}
+				if (axis & NY_AXIS_Y) {
+					Position.Y += valueColMin;
+					Speed.Y = 0;
+				}
+				if (axis & NY_AXIS_Z) {
+					Speed.Z = 0;
+					Position.Z += valueColMin;
+					Speed *= pow(0.01f, elapsed);
+					Standing = true;
+				}
 			}
+		}
 		// Placement de la camera
-		Cam->moveTo(Position + NYVert3Df(0, 0, Height * .75f));
+		Cam->moveLookAt(Position + NYVert3Df(0, 0, Height * .75f));
 	}
 	void pick() {
-		NYVert3Df point = 
+		NYVert3Df inter;
+		int x, y, z;
+		if (World->getRayCollision(Position, Position + Cam->_Direction * 128, inter, x, y, z)) {
+			World->setCube(x, y, z, CUBE_AIR);
+			World->updateCube(x, y, z);
+		}
 	}
 	void jump() {
 		if (!Jump) {
@@ -184,6 +160,7 @@ public:
 			case 'q': gauche = down; break;
 			case 'd': droite = down; break;
 			case ' ': jump(); break;
+			case 'a': if (down) pick(); break;
 		}
 	}
 };
