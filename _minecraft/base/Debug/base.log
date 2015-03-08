@@ -1,52 +1,14 @@
-﻿Build started 19/02/2015 15:40:33.
-     1>Project "C:\Users\lucien.catonnet\Documents\GitHub\JminCraft\_minecraft\base\base.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I../src /I../src/external /I../../_engine/src /I../../_engine/src/external /I../../_engine/src/external/bullet/src /ZI /nologo /W3 /WX- /Od /Oy- /D LOG_FILE /D WIN32 /D _DEBUG /D _WINDOWS /D _CRT_SECURE_NO_WARNINGS /D TETLIBRARY /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\src\main.cpp
-         main.cpp
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_engine\src\engine\utils\ny_utils.h(25): warning C4005: 'NAN' : macro redefinition
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\math.h(106) : see previous definition of 'NAN'
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(578): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(579): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(580): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(581): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(591): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(592): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(593): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(594): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(604): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(605): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(606): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(607): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(617): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(618): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(619): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(620): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(630): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(631): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(632): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(633): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(643): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(644): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(645): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\world.h(646): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\avatar.h(42): warning C4305: '=' : truncation from 'double' to 'float'
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\main.cpp(151): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\main.cpp(165): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\main.cpp(169): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\main.cpp(171): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\main.cpp(198): warning C4305: '*=' : truncation from 'double' to 'float'
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\main.cpp(205): warning C4305: '*=' : truncation from 'double' to 'float'
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\main.cpp(231): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>c:\users\lucien.catonnet\documents\github\jmincraft\_minecraft\src\main.cpp(233): warning C4305: 'argument' : truncation from 'double' to 'float'
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\lucien.catonnet\Documents\GitHub\JminCraft\_minecraft\Debug\base.exe" /INCREMENTAL /NOLOGO /LIBPATH:../lib /LIBPATH:../../_engine/lib libpng16.lib libcurl.lib openal32.lib alut_d.lib glew32.lib freeglut.lib Kernel32.lib Psapi.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\lucien.catonnet\Documents\GitHub\JminCraft\_minecraft\Debug\base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\lucien.catonnet\Documents\GitHub\JminCraft\_minecraft\Debug\base.lib" /MACHINE:X86 /SAFESEH Debug\log.obj
+﻿La génération a démarré 08/03/2015 21:38:22.
+     1>Projet "D:\Projects\VisualStudio\JminCraft\_minecraft\base\base.vcxproj" sur le nœud 2 (Build cible(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Projects\VisualStudio\JminCraft\_minecraft\Debug\base.exe" /INCREMENTAL /NOLOGO /LIBPATH:../lib /LIBPATH:../../_engine/lib libpng16.lib libcurl.lib openal32.lib alut_d.lib glew32.lib freeglut.lib Kernel32.lib Psapi.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Projects\VisualStudio\JminCraft\_minecraft\Debug\base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Projects\VisualStudio\JminCraft\_minecraft\Debug\base.lib" /MACHINE:X86 /SAFESEH Debug\log.obj
          Debug\renderer.obj
-         Debug\basic_physic_engine.obj
          Debug\chunk.obj
          Debug\main.obj
-         base.vcxproj -> C:\Users\lucien.catonnet\Documents\GitHub\JminCraft\_minecraft\Debug\base.exe
-     1>Done Building Project "C:\Users\lucien.catonnet\Documents\GitHub\JminCraft\_minecraft\base\base.vcxproj" (Build target(s)).
+     1>log.obj : warning LNK4075: ' /EDITANDCONTINUE' ignoré à cause de la spécification '/SAFESEH'
+         base.vcxproj -> D:\Projects\VisualStudio\JminCraft\_minecraft\Debug\base.exe
+     1>Génération du projet "D:\Projects\VisualStudio\JminCraft\_minecraft\base\base.vcxproj" terminée (Build cible(s)).
 
-Build succeeded.
+La génération a réussi.
 
-Time Elapsed 00:00:01.18
+Temps écoulé 00:00:00.26

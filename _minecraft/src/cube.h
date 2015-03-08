@@ -7,7 +7,9 @@ enum NYCubeType
 	CUBE_HERBE,
 	CUBE_EAU,
 	CUBE_TERRE,
-	CUBE_AIR
+	CUBE_AIR,
+	CUBE_SABLE,
+	CUBE_ROCHE
 };
 
 class NYCube

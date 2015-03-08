@@ -9,7 +9,6 @@
       <Filter>engine\log</Filter>
     </ClCompile>
     <ClCompile Include="..\src\chunk.cpp" />
-    <ClCompile Include="..\src\basic_physic_engine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -43,7 +42,6 @@
     <ClInclude Include="..\src\world.h" />
     <ClInclude Include="..\src\avatar.h" />
     <ClInclude Include="..\src\my_physics.h" />
-    <ClInclude Include="..\src\basic_physic_engine.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\run\shaders\psbase.glsl" />

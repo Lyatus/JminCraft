@@ -24,7 +24,7 @@ typedef uint8 NYAxis;
 
 
 #define MAT_SIZE 16 //en nombre de chunks
-#define MAT_HEIGHT 1 //en nombre de chunks
+#define MAT_HEIGHT 2 //en nombre de chunks
 #define MAT_SIZE_CUBES (MAT_SIZE * NYChunk::CHUNK_SIZE)
 #define MAT_HEIGHT_CUBES (MAT_HEIGHT * NYChunk::CHUNK_SIZE)
 
@@ -43,33 +43,33 @@ public:
 		for (int x = 0; x < MAT_SIZE; x++)
 			for (int y = 0; y < MAT_SIZE; y++)
 				for (int z = 0; z < MAT_HEIGHT; z++)
-					_Chunks[x][y][z] = new NYChunk(x,y,z);
+					_Chunks[x][y][z] = new NYChunk(x, y, z);
 
 		for (int x = 0; x < MAT_SIZE; x++)
 			for (int y = 0; y < MAT_SIZE; y++)
 				for (int z = 0; z < MAT_HEIGHT; z++) {
-					NYChunk * cxPrev = NULL;
-					if (x > 0)
-						cxPrev = _Chunks[x - 1][y][z];
-					NYChunk * cxNext = NULL;
-					if (x < MAT_SIZE - 1)
-						cxNext = _Chunks[x + 1][y][z];
+			NYChunk * cxPrev = NULL;
+			if (x > 0)
+				cxPrev = _Chunks[x - 1][y][z];
+			NYChunk * cxNext = NULL;
+			if (x < MAT_SIZE - 1)
+				cxNext = _Chunks[x + 1][y][z];
 
-					NYChunk * cyPrev = NULL;
-					if (y > 0)
-						cyPrev = _Chunks[x][y - 1][z];
-					NYChunk * cyNext = NULL;
-					if (y < MAT_SIZE - 1)
-						cyNext = _Chunks[x][y + 1][z];
+			NYChunk * cyPrev = NULL;
+			if (y > 0)
+				cyPrev = _Chunks[x][y - 1][z];
+			NYChunk * cyNext = NULL;
+			if (y < MAT_SIZE - 1)
+				cyNext = _Chunks[x][y + 1][z];
 
-					NYChunk * czPrev = NULL;
-					if (z > 0)
-						czPrev = _Chunks[x][y][z - 1];
-					NYChunk * czNext = NULL;
-					if (z < MAT_HEIGHT - 1)
-						czNext = _Chunks[x][y][z + 1];
+			NYChunk * czPrev = NULL;
+			if (z > 0)
+				czPrev = _Chunks[x][y][z - 1];
+			NYChunk * czNext = NULL;
+			if (z < MAT_HEIGHT - 1)
+				czNext = _Chunks[x][y][z + 1];
 
-					_Chunks[x][y][z]->setVoisins(cxPrev, cxNext, cyPrev, cyNext, czPrev, czNext);
+			_Chunks[x][y][z]->setVoisins(cxPrev, cxNext, cyPrev, cyNext, czPrev, czNext);
 				}
 
 
@@ -115,6 +115,10 @@ public:
 		for (int z = 0; z < MAT_HEIGHT_CUBES; z++)
 			if (z == 0)
 				setCube(x, y, z, CUBE_EAU);
+			else if (z == 1 && z == height)
+				setCube(x, y, z, CUBE_SABLE);
+			else if (z > (MAT_HEIGHT_CUBES/3)*2 && z <= height)
+				setCube(x, y, z, CUBE_ROCHE);
 			else if (z < height)
 				setCube(x, y, z, CUBE_TERRE);
 			else if (z == height)
@@ -122,6 +126,18 @@ public:
 			else
 				setCube(x, y, z, CUBE_AIR);
 
+	}
+	void load_arbre(int x, int y){
+		int z = _MatriceHeights[x][y] + 1;
+		if (z <= 2) return;
+		int height = 4 + rand() % 4;
+		int radius = height / 4 + rand() % 3;
+		for (int i = 0; i < height; i++)
+			setCube(x, y, z + i, CUBE_TERRE);
+		for (int xi = -radius; xi <= radius; xi++)
+			for (int yi = -radius; yi <= radius; yi++)
+				for (int zi = -radius; zi <= radius; zi++)
+					setCube(x + xi, y + yi, z + height + zi, CUBE_HERBE);
 	}
 
 	//Creation du monde entier, en utilisant le mouvement brownien fractionnaire
@@ -167,18 +183,18 @@ public:
 		int s = 6;
 		for (int x = 0; x < MAT_SIZE_CUBES; x++)
 			for (int y = 0; y < MAT_SIZE_CUBES; y++) {
-				int newh = 0, c = 0;
-				for (int xi = x - s; xi <= x + s; xi++)
-					for (int yi = y - s; yi <= y + s; yi++)
-						if (xi != x && yi != y
-							&& xi >= 0 && yi >= 0
-							&& xi < MAT_SIZE_CUBES && yi < MAT_SIZE_CUBES) {
-							newh += _MatriceHeights[xi][yi];
-							c++;
-						}
-				if (c)
-					newh /= c;
-				_NewHeights[x][y] = newh;
+			int newh = 0, c = 0;
+			for (int xi = x - s; xi <= x + s; xi++)
+				for (int yi = y - s; yi <= y + s; yi++)
+					if (xi != x && yi != y
+						&& xi >= 0 && yi >= 0
+						&& xi < MAT_SIZE_CUBES && yi < MAT_SIZE_CUBES) {
+				newh += _MatriceHeights[xi][yi];
+				c++;
+					}
+			if (c)
+				newh /= c;
+			_NewHeights[x][y] = newh;
 			}
 		for (int x = 0; x < MAT_SIZE_CUBES; x++)
 			for (int y = 0; y < MAT_SIZE_CUBES; y++)
@@ -214,6 +230,10 @@ public:
 
 		//Lissage
 		lisse();
+
+		//Plantage d'arbres
+		for (int i = 0; i < 32; i++)
+			load_arbre(rand() % MAT_SIZE_CUBES, rand() % MAT_SIZE_CUBES);
 
 		for (int x = 0; x < MAT_SIZE; x++)
 			for (int y = 0; y < MAT_SIZE; y++)
@@ -545,18 +565,18 @@ public:
 		for (x = xDeb; x <= xFin; x++)
 			for (y = yDeb; y <= yFin; y++)
 				for (z = zDeb; z <= zFin; z++) {
-					if (getCube(x, y, z)->isSolid()) {
-						if (getRayCollisionWithCube(debSegment, finSegment, x, y, z, interTmp)) {
-							if ((debSegment - interTmp).getMagnitude() < minDist || minDist == -1) {
-								minDist = (debSegment - interTmp).getMagnitude();
-								inter = interTmp;
-								xCube = x;
-								yCube = y;
-								zCube = z;
+			if (getCube(x, y, z)->isSolid()) {
+				if (getRayCollisionWithCube(debSegment, finSegment, x, y, z, interTmp)) {
+					if ((debSegment - interTmp).getMagnitude() < minDist || minDist == -1) {
+						minDist = (debSegment - interTmp).getMagnitude();
+						inter = interTmp;
+						xCube = x;
+						yCube = y;
+						zCube = z;
 
-							}
-						}
 					}
+				}
+			}
 				}
 
 		if (minDist != -1)
@@ -662,10 +682,10 @@ public:
 		for (int x = 0; x < MAT_SIZE; x++)
 			for (int y = 0; y < MAT_SIZE; y++)
 				for (int z = 0; z < MAT_HEIGHT; z++) {
-					glPushMatrix();
-					glTranslatef((float)(x*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE), (float)(y*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE), (float)(z*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE));
-					_Chunks[x][y][z]->render();
-					glPopMatrix();
+			glPushMatrix();
+			glTranslatef((float)(x*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE), (float)(y*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE), (float)(z*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE));
+			_Chunks[x][y][z]->render();
+			glPopMatrix();
 				}
 	}
 
@@ -675,8 +695,8 @@ public:
 		for (int x = 0; x < MAT_SIZE; x++)
 			for (int y = 0; y < MAT_SIZE; y++)
 				for (int z = 0; z < MAT_HEIGHT; z++) {
-					_Chunks[x][y][z]->toVbo();
-					totalNbVertices += _Chunks[x][y][z]->_NbVertices;
+			_Chunks[x][y][z]->toVbo();
+			totalNbVertices += _Chunks[x][y][z]->_NbVertices;
 				}
 
 		Log::log(Log::ENGINE_INFO, (toString(totalNbVertices) + " vertices in VBO").c_str());
@@ -686,14 +706,14 @@ public:
 		for (int x = 0; x < MAT_SIZE_CUBES; x++)
 			for (int y = 0; y < MAT_HEIGHT_CUBES; y++)
 				for (int z = 0; z < MAT_SIZE_CUBES; z++) {
-					NYCube * cube = getCube(x, y, z);
-					if (cube->_Draw && cube->isSolid()) {
-						glPushMatrix();
-						glTranslated(x, y, z);
-						glMaterialfv(GL_FRONT, GL_DIFFUSE, cube->getColor());
-						glutSolidCube(1);
-						glPopMatrix();
-					}
+			NYCube * cube = getCube(x, y, z);
+			if (cube->_Draw && cube->isSolid()) {
+				glPushMatrix();
+				glTranslated(x, y, z);
+				glMaterialfv(GL_FRONT, GL_DIFFUSE, cube->getColor());
+				glutSolidCube(1);
+				glPopMatrix();
+			}
 				}
 	}
 };

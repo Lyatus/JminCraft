@@ -10,7 +10,7 @@ void main()
 	// Transforming The Vertex
 	gl_Vertex = invertView * gl_ModelViewMatrix * gl_Vertex;
 	if(gl_Color.b>.9)
-		gl_Vertex.z+= sin(elapsed*8+gl_Vertex.x/2)*4 + sin(elapsed/8 * gl_Vertex.y/2);
+		gl_Vertex.z+= (1.0+sin(elapsed/16+gl_Vertex.x/8)) + (1.0+cos(elapsed/32 * gl_Vertex.y/4));
 	gl_Position = gl_ProjectionMatrix * inverse(invertView) * gl_Vertex;
 
 	// Transforming The Normal To ModelView-Space

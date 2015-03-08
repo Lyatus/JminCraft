@@ -106,6 +106,16 @@ public:
 								color[1] = 48.0f / 255.0f;
 								color[2] = 255.0f / 255.0f;
 								break;
+							case CUBE_SABLE:
+								color[0] = 200.0f / 255.0f;
+								color[1] = 200.0f / 255.0f;
+								color[2] = 12.0f / 255.0f;
+								break;
+							case CUBE_ROCHE:
+								color[0] = 128.0f / 255.0f;
+								color[1] = 128.0f / 255.0f;
+								color[2] = 128.0f / 255.0f;
+								break;
 						}
 
 						//Position du cube (coin bas gauche face avant)
